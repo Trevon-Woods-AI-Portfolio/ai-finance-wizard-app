@@ -1,12 +1,12 @@
 import React from 'react'
 import Toolbar from './Toolbar'
-import GridContent from './GridContent'
+import MarketWatch from './MarketWatch'
 
 const Grid = () => {
   return (
     <div className='border border-black min-h-screen w-[84.5%] overflow-auto'>
         <Toolbar />
-        <GridContent />
+        <MarketWatch />
     </div>
   )
 }
