@@ -4,7 +4,7 @@ import MarketWatch from './MarketWatch'
 
 const Grid = () => {
   return (
-    <div className='border border-black min-h-screen w-[84.5%] overflow-auto'>
+    <div className='relative border border-black min-h-screen w-[84.5%] overflow-auto'>
         <Toolbar />
         <MarketWatch />
     </div>
