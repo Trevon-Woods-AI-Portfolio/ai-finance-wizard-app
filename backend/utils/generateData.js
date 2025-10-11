@@ -30,8 +30,40 @@ async function getQuoteData(ticker) {
 }
 
 async function getChartData(ticker, time) {
+  let outputsize = 0;
+
+  switch (time) {
+    case "1min":
+      outputsize = 1440;
+      break;
+    case "5min":
+      outputsize = 288;
+      break;
+    case "15min":
+      outputsize = 96;
+      break;
+    case "1h":
+      outputsize = 24;
+      break;
+    case "4h":
+      outputsize = 6;
+      break;
+    case "1day":
+      outputsize = 30;
+      break;
+    case "1-week":
+      outputsize = 12;
+      break;
+    case "1-month":
+      outputsize = 12;
+      break;
+
+    default:
+      break;
+  }
+
   const res = await fetch(
-    `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=${time}&apikey=${process.env.TWELVE_DATA_API_KEY}`
+    `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=${time}&outputsize=${outputsize}&apikey=${process.env.TWELVE_DATA_API_KEY}`
   );
 
   const data = await res.json();
@@ -47,18 +79,23 @@ async function getChartData(ticker, time) {
   }));
 }
 
-async function TopGainersLosers(ticker, time) {
+async function TopGainersLosers() {
   const res = await fetch(
-    `https://api.twelvedata.com/market_movers/stocks?apikey=${process.env.TWELVE_DATA_API_KEY}&outputsize=15`
+    `https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`
   );
-  const gainersData = await res.json();
+  const data = await res.json();
 
-  const res2 = await fetch(
-    `https://api.twelvedata.com/market_movers/stocks?apikey=${process.env.TWELVE_DATA_API_KEY}&direction=losers&outputsize=15`
-  );
-  const losersData = await res2.json();
-
-  return { gainers: gainersData, losers: losersData };
+  return data;
 }
 
-export { getQuoteData, getChartData, TopGainersLosers };
+async function tickerNews(ticker) {
+  const res = await fetch(
+    `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${ticker}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`
+  );
+
+  const data = await res.json();
+
+  return data;
+}
+
+export { getQuoteData, getChartData, TopGainersLosers, tickerNews };
