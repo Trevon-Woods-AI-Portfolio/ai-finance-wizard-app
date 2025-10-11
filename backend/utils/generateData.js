@@ -17,11 +17,13 @@ async function getQuoteData(ticker) {
 
   const data3 = await res3.json();
 
+  console.log(data3)
+
   console.log(data);
   return {
     symbol: data.symbol,
     name: data.name,
-    logo: data3,
+    logo: data3.url,
     price: parseFloat(data2.price),
     change: parseFloat(data.change),
     percentageChange: parseFloat(data.percent_change),

@@ -7,10 +7,10 @@ const MarketWatch = () => {
       <div className="mt-24"></div>
       <div className="grid grid-cols-5 h-[175px] w-[90%] gap-x-10">
         <TickerCard
-          ticker={"NASD"}
+          ticker={"NDAQ"}
           name={"Nasdaq"}
           logo={"../assets/nasdaq_logo.jpeg"}
-          price={"12,345.67"}
+          price={"9,876.54"}
           change={"-123.45"}
           percentageChange={"-1.23%"}
         />

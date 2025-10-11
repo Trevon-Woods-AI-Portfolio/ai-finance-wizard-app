@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,7 +14,26 @@ const TickerCard = ({
 }) => {
   const [search, setSearch] = useState(false);
   const [newTicker, setNewTicker] = useState("");
+  const [data, setData] = useState({});
   const plusminus = change.charAt(0) === "+" ? true : false;
+
+  const getData = async (newTicker) => {
+    const res = await fetch(`/api/data/quoteData/${newTicker}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    const quote = await res.json();
+
+    if (quote.error){
+        return console.log("Error getting quote: ", quote.error);
+    }
+
+    setData(quote.data);
+    console.log(quote.data);
+    setSearch(false);
+  };
 
   return (
     <div
@@ -23,12 +42,12 @@ const TickerCard = ({
     >
       <div className="w-full h-[50%] flex justify-between p-6 gap-8">
         <div className="flex gap-3 items-center">
-          <div>
-            <Avatar alt="Stock Logo" src={logo} />
+          <div className="border border-amber-100 border-2 rounded-full">
+            <Avatar alt="Stock Logo" src={data.logo || logo} />
           </div>
           <div>
-            <p className="font-bold font-sans text-amber-100">{ticker}</p>
-            <p className="text-sm font-serif text-slate-400">{name}</p>
+            <p className="font-bold font-sans text-amber-100">{data.symbol || ticker}</p>
+            <p className="text-sm font-serif text-slate-400">{data.name ? data.name.slice(0,8) : name}</p>
           </div>
         </div>
         <div className="flex gap-2 items-center">
@@ -59,7 +78,7 @@ const TickerCard = ({
       </div>
       <div className="w-full h-[50%] flex justify-evenly items-center gap-6 p-4">
         <div className="flex flex-col gap-1">
-          <p className="text-xl font-mono font-bold text-amber-100">{price}</p>
+          <p className="text-xl font-mono font-bold text-amber-100">{data.price || price}</p>
           <p
             className={
               plusminus
@@ -67,7 +86,7 @@ const TickerCard = ({
                 : "text-xs font-mono text-rose-400"
             }
           >
-            {`${change} (${percentageChange})`}
+            {`${data.change || change} (${data.percentageChange || percentageChange})`}
           </p>
         </div>
         <div>
