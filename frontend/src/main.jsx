@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import systemState from "../state/state";
-// import { SocketContextProvider } from "../context/socketContext.jsx";
+import { SocketContextProvider } from "../context/socketContext.jsx";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import {
@@ -35,7 +35,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)}>
-        <App />
+        <SocketContextProvider>
+          <App />
+        </SocketContextProvider>
       </PersistGate>
     </Provider>
   </StrictMode>

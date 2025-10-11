@@ -11,35 +11,40 @@ const MarketWatch = () => {
           name={"Nasdaq"}
           logo={"../assets/nasdaq_logo.jpeg"}
           price={"12,345.67"}
-          change={"-123.45 (-1.23%)"}
+          change={"-123.45"}
+          percentageChange={"-1.23%"}
         />
         <TickerCard
           ticker={"SPY"}
           name={"Spider"}
           logo={"../assets/spy_logo.jpeg"}
           price={"4,567.89"}
-          change={"+45.67 (+1.01%)"}
+          change={"+45.67"}
+          percentageChange={"+1.01%"}
         />
         <TickerCard
           ticker={"DOW"}
           name={"Dow Jones"}
           logo={"../assets/dow_logo.jpeg"}
           price={"34,567.89"}
-          change={"+234.56 (+0.68%)"}
+          change={"+234.56"}
+          percentageChange={"+0.68%"}
         />
         <TickerCard
           ticker={"AAPL"}
           name={"Apple, Inc."}
           logo={"../assets/apple_logo.jpeg"}
           price={"145.09"}
-          change={"+1.23 (+0.85%)"}
+          change={"+1.23"}
+          percentageChange={"+0.85%"}
         />
         <TickerCard
           ticker={"MFST"}
           name={"Microsoft"}
           logo={"../assets/microsoft_logo.jpeg"}
           price={"299.35"}
-          change={"-2.45 (-0.81%)"}
+          change={"-2.45"}
+          percentageChange={"-0.81%"}
         />
       </div>
       <div className="grid grid-cols-5 w-[90%] gap-x-10">
