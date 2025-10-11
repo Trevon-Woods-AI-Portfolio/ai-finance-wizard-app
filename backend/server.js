@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./db/connectDB.js";
+import dataRoutes from "./routes/dataRoutes.js";
 import { server, app } from "./socket/socket.js";
 
 dotenv.config();
@@ -15,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // app.use("/api/user", userRoutes)
-// app.use("/api/result", resultsRoutes)
+app.use("/api/data", dataRoutes)
 
 
 
