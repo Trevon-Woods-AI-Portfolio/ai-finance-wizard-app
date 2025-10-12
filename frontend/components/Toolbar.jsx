@@ -12,7 +12,7 @@ const Toolbar = () => {
         <div className="">
           <input
             type="text"
-            className=" rounded-md bg-zinc-700 h-[40px] pl-4 "
+            className=" rounded-md bg-zinc-700 h-[40px] pl-4"
             placeholder="Search"
           />
           <SearchIcon className="relative right-8 bottom-[2px] text-amber-400" />

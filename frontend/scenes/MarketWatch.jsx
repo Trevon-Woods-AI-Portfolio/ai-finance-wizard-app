@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import TickerCard from "./TickerCard";
-import Chart from "./Chart";
-import GLCard from "./GLCard";
-import Watchlist from "./Watchlist";
+import TickerCard from "../components/TickerCard";
+import Chart from "../components/Chart";
+import GLCard from "../components/GLCard";
+import Watchlist from "../components/Watchlist";
 
 const MarketWatch = () => {
   const [sampleData, setSampleData] = useState({});
@@ -38,7 +38,7 @@ const MarketWatch = () => {
     } catch (error) {
       console.error("Error fetching sample data:", error);
     }
-  };
+  }
 
   async function changeChartData(newTicker) {
     const res = await fetch(`/api/data/chartData/${newTicker}/1day`, {
@@ -54,7 +54,7 @@ const MarketWatch = () => {
       return console.log("Error getting chart data: ", data.error);
     }
     setChartData(data);
-  };
+  }
   return (
     <div className="flex flex-col h-[91.5%] items-center gap-8 h-screen">
       <div className="mt-24"></div>
@@ -111,12 +111,15 @@ const MarketWatch = () => {
           />
         </div>
         <div className="h-[450px] w-full col-span-2 rounded-2xl bg-zinc-900 border border-black shadow-lg">
-          <Watchlist watchlist={watchlist}/>
+          <Watchlist watchlist={watchlist} />
         </div>
       </div>
       <div className="grid grid-cols-5 w-[90%] gap-x-10">
         <div className="h-[450px] w-full col-span-5 rounded-2xl bg-zinc-900 border border-black shadow-lg">
-          <GLCard changeChartData={changeChartData} setWatchlist={setWatchlist} />
+          <GLCard
+            changeChartData={changeChartData}
+            setWatchlist={setWatchlist}
+          />
         </div>
       </div>
     </div>
