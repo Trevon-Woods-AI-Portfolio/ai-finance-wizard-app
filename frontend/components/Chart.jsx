@@ -9,8 +9,15 @@ import { ChartsTooltip } from "@mui/x-charts/ChartsTooltip";
 import { ChartsAxisHighlight } from "@mui/x-charts/ChartsAxisHighlight";
 import { ChartsGrid, chartsGridClasses } from "@mui/x-charts/ChartsGrid";
 import { axisClasses } from "@mui/x-charts/ChartsAxis";
+import AddIcon from "@mui/icons-material/Add";
 
-const Chart = ({ sampleData, chartData, symbol, setChartData }) => {
+const Chart = ({
+  sampleData,
+  chartData,
+  symbol,
+  setChartData,
+  setWatchlist,
+}) => {
   const timeSeriesData =
     chartData?.data?.time_series || sampleData?.data?.time_series || [];
   const hasData = timeSeriesData.length > 0;
@@ -72,28 +79,33 @@ const Chart = ({ sampleData, chartData, symbol, setChartData }) => {
   return (
     <div className="p-6 font-sans">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold text-amber-100">📊 {symbol}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-xl font-bold text-amber-100">📊 {symbol}</h1>
+          <div className="cursor-pointer" onClick={() => setWatchlist((prev) => [...prev, symbol])} >
+            <AddIcon />
+          </div>
+        </div>
         <div className="w-[32%] flex gap-3">
           <button
-            className="px-2 py-2 rounded-xl bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
+            className="px-2 py-2 rounded-lg bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
             onClick={() => handleChangeInterval("15min")}
           >
             15
           </button>
           <button
-            className="px-2 py-2 rounded-xl bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
+            className="px-2 py-2 rounded-lg bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
             onClick={() => handleChangeInterval("1day")}
           >
             1d
           </button>
           <button
-            className="px-[8.5px] py-2 rounded-xl bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
+            className="px-[8.5px] py-2 rounded-lg bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
             onClick={() => handleChangeInterval("1week")}
           >
             W
           </button>
           <button
-            className="px-[8.5px] py-2 rounded-xl bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
+            className="px-[8.5px] py-2 rounded-lg bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
             onClick={() => handleChangeInterval("1month")}
           >
             M

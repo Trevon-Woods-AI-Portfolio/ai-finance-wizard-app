@@ -32,4 +32,11 @@ const getTickerNews = (req, res) => {
         .catch((err) => res.status(500).json({ error: err.message }));
 };
 
-export { getStockData, getOverviewChartData, getGainersLosers, getTickerNews };
+const generateWatchlistData = (req, res) => {
+    const { tickers } = req.body;
+    Promise.all(tickers.map(ticker => getQuoteData(ticker)))
+        .then(data => res.status(201).json({ data }))
+        .catch(err => res.status(500).json({ error: err.message }));
+}
+
+export { getStockData, getOverviewChartData, getGainersLosers, getTickerNews, generateWatchlistData };

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import TickerCard from "./TickerCard";
 import Chart from "./Chart";
+import GLCard from "./GLCard";
+import Watchlist from "./Watchlist";
 
 const MarketWatch = () => {
   const [sampleData, setSampleData] = useState({});
   const [chartData, setChartData] = useState({});
-  const [ticker, setTicker] = useState("AAPL");
-  const [inputData, setInputData] = useState("");
+  const [watchlist, setWatchlist] = useState([]);
   const symbol = chartData?.data?.name || sampleData?.data?.name || "AAPL";
 
   useEffect(() => {
@@ -17,7 +18,7 @@ const MarketWatch = () => {
     }
   }, []);
 
-  const getSampleData = async () => {
+  async function getSampleData() {
     try {
       const res = await fetch("api/data/chartData/AAPL/1day", {
         method: "GET",
@@ -37,6 +38,22 @@ const MarketWatch = () => {
     } catch (error) {
       console.error("Error fetching sample data:", error);
     }
+  };
+
+  async function changeChartData(newTicker) {
+    const res = await fetch(`/api/data/chartData/${newTicker}/1day`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+      return console.log("Error getting chart data: ", data.error);
+    }
+    setChartData(data);
   };
   return (
     <div className="flex flex-col h-[91.5%] items-center gap-8 h-screen">
@@ -85,15 +102,21 @@ const MarketWatch = () => {
       </div>
       <div className="grid grid-cols-5 w-[90%] gap-x-10">
         <div className="h-[450px] w-full col-span-3 rounded-2xl bg-zinc-900 border border-black shadow-lg">
-          <Chart chartData={chartData} sampleData={sampleData} symbol={symbol} setChartData={setChartData} />
+          <Chart
+            chartData={chartData}
+            sampleData={sampleData}
+            symbol={symbol}
+            setChartData={setChartData}
+            setWatchlist={setWatchlist}
+          />
         </div>
         <div className="h-[450px] w-full col-span-2 rounded-2xl bg-zinc-900 border border-black shadow-lg">
-          Chart Metrics
+          <Watchlist watchlist={watchlist}/>
         </div>
       </div>
       <div className="grid grid-cols-5 w-[90%] gap-x-10">
         <div className="h-[450px] w-full col-span-5 rounded-2xl bg-zinc-900 border border-black shadow-lg">
-          Watchlist
+          <GLCard changeChartData={changeChartData} setWatchlist={setWatchlist} />
         </div>
       </div>
     </div>
