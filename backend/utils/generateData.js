@@ -24,9 +24,9 @@ async function getQuoteData(ticker) {
     symbol: data.symbol,
     name: data.name,
     logo: data3.url,
-    price: parseFloat(data2.price),
-    change: parseFloat(data.change),
-    percentageChange: parseFloat(data.percent_change),
+    price: parseFloat(data2.price).toFixed(2),
+    change: parseFloat(data.change).toFixed(2),
+    percentageChange: parseFloat(data.percent_change).toFixed(2),
     timestamp: new Date(),
   };
 }
@@ -70,15 +70,23 @@ async function getChartData(ticker, time) {
 
   const data = await res.json();
 
+  const res2 = await fetch(
+    `https://api.twelvedata.com/price?symbol=${ticker}&apikey=${process.env.TWELVE_DATA_API_KEY}`
+  );
+
+  const price = await res2.json();
+
   console.log(data);
-  return data.values.map((item) => ({
-    datetime: item.datetime,
+
+  const time_series = data.values.map((item) => ({
+    date: item.datetime,
     open: parseFloat(item.open),
     high: parseFloat(item.high),
     low: parseFloat(item.low),
     close: parseFloat(item.close),
     volume: parseFloat(item.volume),
   }));
+  return {time_series: time_series.reverse(), price: price.price, name: data.meta.symbol};
 }
 
 async function TopGainersLosers() {

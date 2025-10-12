@@ -37,7 +37,7 @@ const TickerCard = ({
 
   return (
     <div
-      className="h-[175px] w-full col-span-1 rounded-2xl bg-zinc-900 shadow-lg p-3"
+      className="h-[175px] w-full col-span-1 rounded-2xl bg-zinc-900 border border-black shadow-lg p-3"
       id="ticker-card1"
     >
       <div className="w-full h-[50%] flex justify-between p-6 gap-8">
@@ -106,3 +106,4 @@ const TickerCard = ({
 };
 
 export default TickerCard;
+

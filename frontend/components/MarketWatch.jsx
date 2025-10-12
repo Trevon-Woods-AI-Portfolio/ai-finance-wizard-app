@@ -1,7 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TickerCard from "./TickerCard";
+import Chart from "./Chart";
 
 const MarketWatch = () => {
+  const [sampleData, setSampleData] = useState({});
+  const [chartData, setChartData] = useState({});
+  const [ticker, setTicker] = useState("AAPL");
+  const [inputData, setInputData] = useState("");
+  const symbol = chartData?.data?.name || sampleData?.data?.name || "AAPL";
+
+  useEffect(() => {
+    const isChartData = Object.keys(chartData).length === 0;
+
+    if (isChartData) {
+      getSampleData();
+    }
+  }, []);
+
+  const getSampleData = async () => {
+    try {
+      const res = await fetch("api/data/chartData/AAPL/1day", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (data.error)
+        return console.error("Error fetching sample data:", data.error);
+
+      setSampleData(data);
+
+      console.log("Sample Data: ", data);
+    } catch (error) {
+      console.error("Error fetching sample data:", error);
+    }
+  };
   return (
     <div className="flex flex-col h-[91.5%] items-center gap-8 h-screen">
       <div className="mt-24"></div>
@@ -48,15 +84,15 @@ const MarketWatch = () => {
         />
       </div>
       <div className="grid grid-cols-5 w-[90%] gap-x-10">
-        <div className="h-[450px] w-full col-span-3 rounded-2xl bg-zinc-900 shadow-lg">
-          Chart
+        <div className="h-[450px] w-full col-span-3 rounded-2xl bg-zinc-900 border border-black shadow-lg">
+          <Chart chartData={chartData} sampleData={sampleData} symbol={symbol} setChartData={setChartData} />
         </div>
-        <div className="h-[450px] w-full col-span-2 rounded-2xl bg-zinc-900 shadow-lg">
+        <div className="h-[450px] w-full col-span-2 rounded-2xl bg-zinc-900 border border-black shadow-lg">
           Chart Metrics
         </div>
       </div>
       <div className="grid grid-cols-5 w-[90%] gap-x-10">
-        <div className="h-[450px] w-full col-span-5 rounded-2xl bg-zinc-900 shadow-lg">
+        <div className="h-[450px] w-full col-span-5 rounded-2xl bg-zinc-900 border border-black shadow-lg">
           Watchlist
         </div>
       </div>
