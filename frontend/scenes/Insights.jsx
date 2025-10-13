@@ -100,7 +100,7 @@ const Insights = () => {
                   {openSummary === "Summary" ? <ExpandLess className="text-zinc-900"/> : <ExpandMore className="text-zinc-900"/>}
                 </ListItemButton>
                 <Collapse in={openSummary} timeout="auto" unmountOnExit>
-                  <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-2 text-zinc-900">
+                  <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900">
                     {insightsData?.data?.[0].summary}
                   </div>
                 </Collapse>
@@ -108,11 +108,11 @@ const Insights = () => {
                   <ListItemIcon>
                     <ThumbUpAltIcon className="text-green-600"/>
                   </ListItemIcon>
-                  <ListItemText primary="Positive" className="text-green-600" />
+                  <ListItemText primary="Positive Insights" className="text-green-600" />
                   {openPositive ? <ExpandLess className="text-zinc-900"/> : <ExpandMore className="text-zinc-900"/>}
                 </ListItemButton>
                 <Collapse in={openPositive} timeout="auto" unmountOnExit>
-                  <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-2 text-zinc-900">
+                  <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900">
                     {insightsData?.data?.[0].positive.map((s, i) => (
                       <p key={i}>{`${i+1}. ${s}`}</p>
                     ))}
@@ -122,11 +122,11 @@ const Insights = () => {
                   <ListItemIcon>
                     <ThumbDownAltIcon className="text-red-600"/>
                   </ListItemIcon>
-                  <ListItemText primary="Negative" className="text-red-600" />
+                  <ListItemText primary="Negative Insights" className="text-red-600" />
                   {openNegative ? <ExpandLess className="text-zinc-900" /> : <ExpandMore className="text-zinc-900"/>}
                 </ListItemButton>
                 <Collapse in={openNegative} timeout="auto" unmountOnExit>
-                  <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-2 text-zinc-900">
+                  <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900">
                     {insightsData?.data?.[0].negative.map((s, i) => (
                       <p key={i}>{`${i+1}. ${s}`}</p>
                     ))}
