@@ -1,5 +1,5 @@
 # Finance Dashboard Application
-## 🚀 **Elevator Pitch**
+## 🚀 **About**
 A comprehensive, real-time financial analytics platform that empowers investors and traders with AI-powered insights, interactive charting, sentiment analysis, and market data visualization. Built with React and Node.js, this application aggregates data from multiple financial APIs to provide a unified dashboard experience for tracking stocks, analyzing trends, and making informed investment decisions.
 
 ## 📊 **Key Features**
