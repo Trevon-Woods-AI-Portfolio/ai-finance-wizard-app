@@ -30,7 +30,7 @@ const News = () => {
             id: item.url || index, // Use URL as unique id, or fallback to index
             ...item,
           }));
-          console.log(dataWithIds)
+          setTicker(newSymbol);
           setNewsData({ data: dataWithIds });
         }
       }
@@ -129,7 +129,7 @@ const News = () => {
       <div className="mt-20 grid grid-cols-5 w-[90%] gap-x-10"></div>
       <div className="grid grid-cols-5 w-[90%] gap-x-10">
         <div className="h-[800px] w-full col-span-5 rounded-2xl bg-zinc-900 border border-black shadow-lg p-2">
-          <div className="p-4">
+          <div className="flex p-4 gap-4">
             <label className="text-amber-100 font-semibold mr-2">
               {symbol}
             </label>

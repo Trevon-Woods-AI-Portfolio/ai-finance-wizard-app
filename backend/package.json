@@ -12,13 +12,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@extractus/article-extractor": "^8.0.20",
+    "@langchain/core": "^0.3.78",
+    "@langchain/openai": "^0.6.16",
     "@mendable/firecrawl-js": "^4.3.8",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "html-to-text": "^9.0.5",
     "jsonwebtoken": "^9.0.2",
+    "langchain": "^0.3.36",
     "mongoose": "^8.19.1",
     "nodemon": "^3.1.10",
     "socket.io": "^4.8.1"

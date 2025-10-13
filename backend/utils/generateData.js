@@ -16,7 +16,7 @@ async function getQuoteData(ticker) {
   );
 
   const data3 = await res3.json();
-  
+
   return {
     symbol: data.symbol,
     name: data.name,
@@ -133,4 +133,14 @@ async function overview(ticker) {
   return data;
 }
 
-export { getQuoteData, getChartData, TopGainersLosers, tickerNews, overview };
+async function aiInsight(ticker) {
+  const res = await fetch(
+    `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${ticker}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`
+  );
+
+  const data = await res.json();
+
+  return data.feed;
+}
+
+export { getQuoteData, getChartData, TopGainersLosers, tickerNews, overview, aiInsight };
