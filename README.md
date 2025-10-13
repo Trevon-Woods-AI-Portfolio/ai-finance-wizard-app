@@ -10,20 +10,28 @@ A comprehensive, real-time financial analytics platform that empowers investors 
 - Interactive Charts: Dynamic price and volume visualization with multiple timeframe options (15-minute, daily, weekly, monthly intervals)
 - Customizable Watchlist: Add and track your favorite stocks with real-time updates
 
+![AI Finance Dashboard Image](./frontend/assets/overview.jpeg)
+
 ### **Advanced Analytics**
 - Top Gainers & Losers: Instantly view market movers with sortable data grids
 - Statistical Overview: Comprehensive fundamental analysis including P/E ratios, EPS, market cap, dividend yields, and 50+ financial metrics
 - Company Profiles: Detailed company descriptions and sector information
+
+![AI Finance Dashboard Image](./frontend/assets/analysis.jpeg)
 
 ### **News & Sentiment**
 - Real-time News Feed: Latest news articles filtered by stock ticker
 - Sentiment Analysis: AI-powered sentiment scoring for each news article (positive, neutral, negative)
 - Topic Categorization: Automatic classification of news by relevance and topic
 
+![AI Finance Dashboard Image](./frontend/assets/news.jpeg)
+
 ### **AI-Powered Insights**
 - Intelligent Analysis: GPT-powered analysis of recent news articles to generate actionable insights
 - Positive & Negative Highlights: Structured breakdown of bullish and bearish factors
 - Market Outlook Summary: Concise summary of overall market sentiment and trends
+
+![AI Finance Dashboard Image](./frontend/assets/insights.jpeg)
 
 ## 🛠️ **Key Technologies & Dependencies**
 
