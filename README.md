@@ -1,4 +1,5 @@
-# Finance Dashboard Application
+# AI Powered Finance Dashboard
+![AI Finance Dashboard Logo](./frontend/assets/finance_app_login_signup_logo.png)
 ## 🚀 **About**
 A comprehensive, real-time financial analytics platform that empowers investors and traders with AI-powered insights, interactive charting, sentiment analysis, and market data visualization. Built with React and Node.js, this application aggregates data from multiple financial APIs to provide a unified dashboard experience for tracking stocks, analyzing trends, and making informed investment decisions.
 
