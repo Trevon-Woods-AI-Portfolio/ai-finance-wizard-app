@@ -16,10 +16,7 @@ async function getQuoteData(ticker) {
   );
 
   const data3 = await res3.json();
-
-  console.log(data3)
-
-  console.log(data);
+  
   return {
     symbol: data.symbol,
     name: data.name,
@@ -76,8 +73,6 @@ async function getChartData(ticker, time) {
 
   const price = await res2.json();
 
-  console.log(data);
-
   const time_series = data.values.map((item) => ({
     date: item.datetime,
     open: parseFloat(item.open),
@@ -86,7 +81,11 @@ async function getChartData(ticker, time) {
     close: parseFloat(item.close),
     volume: parseFloat(item.volume),
   }));
-  return {time_series: time_series.reverse(), price: price.price, name: data.meta.symbol};
+  return {
+    time_series: time_series.reverse(),
+    price: price.price,
+    name: data.meta.symbol,
+  };
 }
 
 async function TopGainersLosers() {
@@ -105,7 +104,23 @@ async function tickerNews(ticker) {
 
   const data = await res.json();
 
-  return data;
+  const newsData = data.feed.map((item) => ({
+    title: item.title,
+    url: item.url,
+    source: item.source,
+    topic: item.topics
+      .map((topic) => {
+        if (topic.relevance_score > 0.5) return topic.topic;
+        else return "";
+      })
+      .filter((topic) => topic !== "")
+      .join(", "),
+    sentiment_score: item.overall_sentiment_score,
+    sentiment_label: item.overall_sentiment_label,
+    time_published: item.time_published,
+  }));
+
+  return newsData;
 }
 
 async function overview(ticker) {
