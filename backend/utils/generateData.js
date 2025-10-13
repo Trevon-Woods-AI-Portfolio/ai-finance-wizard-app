@@ -108,4 +108,14 @@ async function tickerNews(ticker) {
   return data;
 }
 
-export { getQuoteData, getChartData, TopGainersLosers, tickerNews };
+async function overview(ticker) {
+  const res = await fetch(
+    `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`
+  );
+
+  const data = await res.json();
+
+  return data;
+}
+
+export { getQuoteData, getChartData, TopGainersLosers, tickerNews, overview };

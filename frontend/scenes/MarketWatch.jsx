@@ -103,8 +103,9 @@ const MarketWatch = () => {
       <div className="grid grid-cols-5 w-[90%] gap-x-10">
         <div className="h-[450px] w-full col-span-3 rounded-2xl bg-zinc-900 border border-black shadow-lg">
           <Chart
-            chartData={chartData}
-            sampleData={sampleData}
+            chartData={
+              Object.keys(chartData).length === 0 ? sampleData : chartData
+            }
             symbol={symbol}
             setChartData={setChartData}
             setWatchlist={setWatchlist}

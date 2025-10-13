@@ -3,6 +3,7 @@ import {
   getChartData,
   TopGainersLosers,
   tickerNews,
+  overview
 } from "../utils/generateData.js";
 
 const getStockData = (req, res) => {
@@ -39,4 +40,11 @@ const generateWatchlistData = (req, res) => {
         .catch(err => res.status(500).json({ error: err.message }));
 }
 
-export { getStockData, getOverviewChartData, getGainersLosers, getTickerNews, generateWatchlistData };
+const statisticalOverview = (req, res) => {
+    const { ticker } = req.params;
+    overview(ticker)
+        .then((data) => res.status(201).json({ data }))
+        .catch((err) => res.status(500).json({ error: err.message }));
+}
+
+export { getStockData, getOverviewChartData, getGainersLosers, getTickerNews, generateWatchlistData, statisticalOverview };

@@ -35,7 +35,7 @@ const Watchlist = ({ watchlist }) => {
   return (
     <div>
       <div className="flex justify-between items-center p-4 border-b border-amber-100">
-        <h1 className="text-xl font-bold text-amber-100">🔭 Watchlist</h1>
+        <h1 className="text-xl font-bold text-amber-300">🔭 Watchlist</h1>
         <div className="flex gap-3 cursor-pointer">
           <AddIcon />
         </div>

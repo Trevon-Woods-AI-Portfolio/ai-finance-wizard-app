@@ -124,7 +124,7 @@ const GLCard = ({changeChartData, setWatchlist}) => {
   return (
     <div className="h-full w-full">
       <div className="flex justify-between items-center p-4 border-b border-amber-100">
-        <h1 className="text-xl font-bold text-amber-100">
+        <h1 className="text-xl font-bold text-amber-300">
           {topic === "Gainers" ? (
             <p className="flex justify-center items-center gap-4">
               <img src="../assets/upward_trend.png" alt="" className="size-8" />{" "}

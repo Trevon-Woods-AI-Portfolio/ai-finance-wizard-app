@@ -17,6 +17,8 @@ const Chart = ({
   symbol,
   setChartData,
   setWatchlist,
+  setStatistics,
+  statistics,
 }) => {
   const timeSeriesData =
     chartData?.data?.time_series || sampleData?.data?.time_series || [];
@@ -53,7 +55,22 @@ const Chart = ({
       if (data.error) {
         return console.log("Error getting chart data: ", data.error);
       }
+
+      const res2 = await fetch(`/api/data/overview/${newSymbol}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const overviewData = await res2.json();
+
+      if (overviewData.error) {
+        return console.log("Error getting overview data: ", overviewData.error);
+      }
+
       setChartData(data);
+      setStatistics(overviewData);
     }
   }
 
@@ -80,8 +97,11 @@ const Chart = ({
     <div className="p-6 font-sans">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-3">
-          <h1 className="text-xl font-bold text-amber-100">📊 {symbol}</h1>
-          <div className="cursor-pointer" onClick={() => setWatchlist((prev) => [...prev, symbol])} >
+          <h1 className="text-xl font-bold text-amber-300">📊 {symbol}</h1>
+          <div
+            className="cursor-pointer"
+            onClick={() => setWatchlist((prev) => [...prev, symbol])}
+          >
             <AddIcon />
           </div>
         </div>

@@ -42,11 +42,11 @@ const TickerCard = ({
     >
       <div className="w-full h-[50%] flex justify-between p-6 gap-8">
         <div className="flex gap-3 items-center">
-          <div className="border border-amber-100 border-2 rounded-full">
+          <div className="border border-amber-300 border-2 rounded-full">
             <Avatar alt="Stock Logo" src={data.logo || logo} />
           </div>
           <div>
-            <p className="font-bold font-sans text-amber-100">{data.symbol || ticker}</p>
+            <p className="font-bold font-sans text-amber-300">{data.symbol || ticker}</p>
             <p className="text-sm font-serif text-slate-400">{data.name ? data.name.slice(0,8) : name}</p>
           </div>
         </div>
