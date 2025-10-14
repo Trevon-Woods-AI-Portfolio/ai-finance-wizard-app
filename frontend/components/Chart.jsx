@@ -1,4 +1,13 @@
 import React, { useState, useEffect } from "react";
+import {
+  ComposedChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 import Box from "@mui/material/Box";
 import { BarPlot, barElementClasses } from "@mui/x-charts/BarChart";
 import { LineHighlightPlot, LinePlot } from "@mui/x-charts/LineChart";
@@ -23,7 +32,10 @@ const Chart = ({
   const timeSeriesData =
     chartData?.data?.time_series || sampleData?.data?.time_series || [];
   const hasData = timeSeriesData.length > 0;
+  const [chartType, setChartType] = useState("line");
+  const [interval, setInterval] = useState("1day");
 
+  console.log(chartData);
   async function handleChangeInterval(newInterval) {
     const res = await fetch(`/api/data/chartData/${symbol}/${newInterval}`, {
       method: "GET",
@@ -38,6 +50,7 @@ const Chart = ({
       return console.log("Error getting chart data: ", data.error);
     }
     setChartData(data);
+    setInterval(newInterval);
   }
 
   async function handleKeyDown(e) {
@@ -93,6 +106,64 @@ const Chart = ({
     },
   ];
 
+  const Candlestick = (props) => {
+    const { x, y, width, height, payload } = props;
+    const { open, close, high, low } = payload;
+
+    const isGrowing = close > open;
+    const color = isGrowing ? "#10b981" : "#ef4444";
+
+    // Calculate positions relative to the chart scale
+    const yScale = height / (high - low);
+    const wickTop = 0;
+    const wickBottom = height;
+    const bodyTop = (high - Math.max(open, close)) * yScale;
+    const bodyBottom = (high - Math.min(open, close)) * yScale;
+    const bodyHeight = Math.abs(bodyBottom - bodyTop);
+
+    return (
+      <g stroke={color} fill={color} strokeWidth="1">
+        {/* High/Low wick line */}
+        <line
+          x1={x + width / 2}
+          y1={y + wickTop}
+          x2={x + width / 2}
+          y2={y + wickBottom}
+          stroke={color}
+          strokeWidth="1"
+        />
+        {/* Open/Close body rectangle */}
+        <rect
+          x={x}
+          y={y + bodyTop}
+          width={width}
+          height={bodyHeight || 1}
+          fill={color}
+          stroke={color}
+        />
+      </g>
+    );
+  };
+
+  const prepareChartData = (data) => {
+    const newData = data.map((item) => ({
+      ...item,
+      date: item.date,
+      openClose: [item.open, item.close],
+      highLow: [item.low, item.high],
+      low: item.low,
+      high: item.high,
+    }));
+
+    console.log("Pepared ChartData: ", newData);
+    return newData;
+  };
+
+  const formatXAxisDate = (datetime) => {
+    const date = new Date(datetime);
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  };
+
   return (
     <div className="p-6 font-sans">
       <div className="flex justify-between items-center mb-4">
@@ -105,27 +176,49 @@ const Chart = ({
             <AddIcon />
           </div>
         </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setChartType("line")}
+            className={`px-2 rounded-xl border border-amber-300 ${
+              chartType === "line"
+                ? "bg-amber-300 text-zinc-900"
+                : "text-amber-300"
+            }`}
+          >
+            Line Chart
+          </button>
+          <button
+            onClick={() => setChartType("candlestick")}
+            className={`px-2 rounded-xl border border-amber-300 ${
+              chartType === "candlestick"
+                ? "bg-amber-300 text-zinc-900"
+                : "text-amber-300"
+            }`}
+          >
+            Candlestick
+          </button>
+        </div>
         <div className="w-[32%] flex gap-3">
           <button
-            className="px-2 py-2 rounded-lg bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
+            className={`px-2 py-2 rounded-lg ${interval === "15min" ? "bg-amber-100" : "bg-zinc-700"} text-amber-100 hover:bg-amber-100 shadow-md ${interval === "15min" ? "text-zinc-900" : "text-amber-100"} hover:text-zinc-900 hover:shadow-md ${interval === "15min" && "shadow-amber-400"} hover:shadow-amber-400`}
             onClick={() => handleChangeInterval("15min")}
           >
             15
           </button>
           <button
-            className="px-2 py-2 rounded-lg bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
+            className={`px-2 py-2 rounded-lg ${interval === "1day" ? "bg-amber-100" : "bg-zinc-700"} text-amber-100 hover:bg-amber-100 shadow-md ${interval === "1day" ? "text-zinc-900" : "text-amber-100"} hover:text-zinc-900 hover:shadow-md ${interval === "1day" && "shadow-amber-400"} hover:shadow-amber-400`}
             onClick={() => handleChangeInterval("1day")}
           >
             1d
           </button>
           <button
-            className="px-[8.5px] py-2 rounded-lg bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
+            className={`px-2 py-2 rounded-lg ${interval === "1week" ? "bg-amber-100" : "bg-zinc-700"} text-amber-100 hover:bg-amber-100 shadow-md ${interval === "1week" ? "text-zinc-900" : "text-amber-100"} hover:text-zinc-900 hover:shadow-md ${interval === "1week" && "shadow-amber-400"} hover:shadow-amber-400`}
             onClick={() => handleChangeInterval("1week")}
           >
             W
           </button>
           <button
-            className="px-[8.5px] py-2 rounded-lg bg-zinc-700 text-amber-100 hover:bg-amber-100 shadow-xl hover:text-zinc-900"
+            className={`px-2 py-2 rounded-lg ${interval === "1month" ? "bg-amber-100" : "bg-zinc-700"} text-amber-100 hover:bg-amber-100 shadow-md ${interval === "1month" ? "text-zinc-900" : "text-amber-100"} hover:text-zinc-900 hover:shadow-md ${interval === "1month" && "shadow-amber-400"} hover:shadow-amber-400`}
             onClick={() => handleChangeInterval("1month")}
           >
             M
@@ -138,8 +231,84 @@ const Chart = ({
           />
         </div>
       </div>
-
-      {hasData ? (
+      {chartType === "candlestick" ? (
+        <ResponsiveContainer width="100%" height={340}>
+          <ComposedChart
+            data={prepareChartData(timeSeriesData)}
+            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+          >
+            <XAxis
+              dataKey="date"
+              stroke="#FFECB3"
+              tick={{ fill: "#FFECB3" }}
+              tickFormatter={formatXAxisDate}
+              interval="preserveStartEnd"
+              angle={-45}
+              textAnchor="end"
+              height={45}
+            />
+            <YAxis
+              domain={[
+                (dataMin) => Math.floor(dataMin * 0.995),
+                (dataMax) => Math.ceil(dataMax * 1.005),
+              ]}
+              stroke="#FFECB3"
+              tick={{ fill: "#FFECB3" }}
+            />
+            <Tooltip
+              cursor={{ fill: "rgba(200, 200, 200, 0.2)" }}
+              content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  const data = payload[0].payload;
+                  const change = data.close - data.open;
+                  const changePercent = ((change / data.open) * 100).toFixed(2);
+                  return (
+                    <div className="bg-amber-100 p-3 border border-gray-300 rounded shadow-lg">
+                      <p className="text-sm font-semibold">{data.datetime}</p>
+                      <p className="text-xs flex gap-1">
+                        <p className="text-zinc-900">Open: </p>
+                        <span className="font-medium text-amber-400">
+                          ${data.open?.toFixed(2)}
+                        </span>
+                      </p>
+                      <p className="text-xs flex gap-1">
+                        <p className="text-zinc-900">High:</p>
+                        <span className="font-medium text-green-600">
+                          ${data.high?.toFixed(2)}
+                        </span>
+                      </p>
+                      <p className="text-xs flex gap-1">
+                        <p className="text-zinc-900">Low: </p>
+                        <span className="font-medium text-red-600">
+                          ${data.low?.toFixed(2)}
+                        </span>
+                      </p>
+                      <p className="text-xs flex gap-1">
+                        <p className="text-zinc-900">Close: </p>
+                        <span className="font-medium text-amber-400">
+                          ${data.close?.toFixed(2)}
+                        </span>
+                      </p>
+                      <p
+                        className={`text-xs font-semibold ${
+                          change >= 0 ? "text-green-600" : "text-red-600"
+                        }`}
+                      >
+                        Change: {change >= 0 ? "+" : ""}
+                        {change.toFixed(2)} ({change >= 0 ? "+" : ""}
+                        {changePercent}%)
+                      </p>
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            />
+            <Bar dataKey="highLow" shape={<Candlestick />} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      ) : // ...existing line/area chart code...
+      hasData ? (
         <Box className="h-[350px] w-full">
           <ChartContainer
             series={series}
@@ -203,23 +372,6 @@ const Chart = ({
               label="Price"
               axisId="price"
               position="left"
-              tickLabelStyle={{
-                fontSize: 10,
-                fill: "FFECB3",
-              }}
-              labelStyle={{
-                fill: "FFECB3",
-              }}
-              sx={{
-                [`& .${axisClasses.line}`]: {
-                  stroke: "#FFECB3",
-                },
-              }}
-            />
-            <ChartsYAxis
-              label="Volume"
-              axisId="volume"
-              position="right"
               tickLabelStyle={{
                 fontSize: 10,
                 fill: "FFECB3",

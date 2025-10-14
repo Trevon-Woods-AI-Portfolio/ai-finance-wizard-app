@@ -92,7 +92,7 @@ const MarketWatch = () => {
           percentageChange={"+0.85%"}
         />
         <TickerCard
-          ticker={"MFST"}
+          ticker={"MSFT"}
           name={"Microsoft"}
           logo={"../assets/microsoft_logo.jpeg"}
           price={"299.35"}

@@ -2,6 +2,7 @@ import React from "react";
 import Toolbar from "./Toolbar";
 import MarketWatch from "../scenes/MarketWatch";
 import Analysis from "../scenes/Analysis";
+import MultiCharts from "../scenes/MultiCharts";
 import News from "../scenes/News";
 import Insights from "../scenes/Insights";
 
@@ -11,6 +12,7 @@ const Grid = ({ changeGrid }) => {
       <Toolbar />
       {changeGrid === "Overview" && <MarketWatch />}
       {changeGrid === "Analysis" && <Analysis />}
+      {changeGrid === "MultiCharts" && <MultiCharts />}
       {changeGrid === "News" && <News />}
       {changeGrid === "Insights" && <Insights />}
     </div>
