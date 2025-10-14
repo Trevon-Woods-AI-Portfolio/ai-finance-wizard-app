@@ -200,25 +200,49 @@ const Chart = ({
         </div>
         <div className="w-[32%] flex gap-3">
           <button
-            className={`px-2 py-2 rounded-lg ${interval === "15min" ? "bg-amber-100" : "bg-zinc-700"} text-amber-100 hover:bg-amber-100 shadow-md ${interval === "15min" ? "text-zinc-900" : "text-amber-100"} hover:text-zinc-900 hover:shadow-md ${interval === "15min" && "shadow-amber-400"} hover:shadow-amber-400`}
+            className={`px-2 py-2 rounded-lg ${
+              interval === "15min" ? "bg-amber-100" : "bg-zinc-700"
+            } text-amber-100 hover:bg-amber-100 shadow-md ${
+              interval === "15min" ? "text-zinc-900" : "text-amber-100"
+            } hover:text-zinc-900 hover:shadow-md ${
+              interval === "15min" && "shadow-amber-400"
+            } hover:shadow-amber-400`}
             onClick={() => handleChangeInterval("15min")}
           >
             15
           </button>
           <button
-            className={`px-2 py-2 rounded-lg ${interval === "1day" ? "bg-amber-100" : "bg-zinc-700"} text-amber-100 hover:bg-amber-100 shadow-md ${interval === "1day" ? "text-zinc-900" : "text-amber-100"} hover:text-zinc-900 hover:shadow-md ${interval === "1day" && "shadow-amber-400"} hover:shadow-amber-400`}
+            className={`px-2 py-2 rounded-lg ${
+              interval === "1day" ? "bg-amber-100" : "bg-zinc-700"
+            } text-amber-100 hover:bg-amber-100 shadow-md ${
+              interval === "1day" ? "text-zinc-900" : "text-amber-100"
+            } hover:text-zinc-900 hover:shadow-md ${
+              interval === "1day" && "shadow-amber-400"
+            } hover:shadow-amber-400`}
             onClick={() => handleChangeInterval("1day")}
           >
             1d
           </button>
           <button
-            className={`px-2 py-2 rounded-lg ${interval === "1week" ? "bg-amber-100" : "bg-zinc-700"} text-amber-100 hover:bg-amber-100 shadow-md ${interval === "1week" ? "text-zinc-900" : "text-amber-100"} hover:text-zinc-900 hover:shadow-md ${interval === "1week" && "shadow-amber-400"} hover:shadow-amber-400`}
+            className={`px-2 py-2 rounded-lg ${
+              interval === "1week" ? "bg-amber-100" : "bg-zinc-700"
+            } text-amber-100 hover:bg-amber-100 shadow-md ${
+              interval === "1week" ? "text-zinc-900" : "text-amber-100"
+            } hover:text-zinc-900 hover:shadow-md ${
+              interval === "1week" && "shadow-amber-400"
+            } hover:shadow-amber-400`}
             onClick={() => handleChangeInterval("1week")}
           >
             W
           </button>
           <button
-            className={`px-2 py-2 rounded-lg ${interval === "1month" ? "bg-amber-100" : "bg-zinc-700"} text-amber-100 hover:bg-amber-100 shadow-md ${interval === "1month" ? "text-zinc-900" : "text-amber-100"} hover:text-zinc-900 hover:shadow-md ${interval === "1month" && "shadow-amber-400"} hover:shadow-amber-400`}
+            className={`px-2 py-2 rounded-lg ${
+              interval === "1month" ? "bg-amber-100" : "bg-zinc-700"
+            } text-amber-100 hover:bg-amber-100 shadow-md ${
+              interval === "1month" ? "text-zinc-900" : "text-amber-100"
+            } hover:text-zinc-900 hover:shadow-md ${
+              interval === "1month" && "shadow-amber-400"
+            } hover:shadow-amber-400`}
             onClick={() => handleChangeInterval("1month")}
           >
             M
@@ -232,83 +256,136 @@ const Chart = ({
         </div>
       </div>
       {chartType === "candlestick" ? (
-        <ResponsiveContainer width="100%" height={340}>
-          <ComposedChart
-            data={prepareChartData(timeSeriesData)}
-            margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-          >
-            <XAxis
-              dataKey="date"
-              stroke="#FFECB3"
-              tick={{ fill: "#FFECB3" }}
-              tickFormatter={formatXAxisDate}
-              interval="preserveStartEnd"
-              angle={-45}
-              textAnchor="end"
-              height={45}
-            />
-            <YAxis
-              domain={[
-                (dataMin) => Math.floor(dataMin * 0.995),
-                (dataMax) => Math.ceil(dataMax * 1.005),
-              ]}
-              stroke="#FFECB3"
-              tick={{ fill: "#FFECB3" }}
-            />
-            <Tooltip
-              cursor={{ fill: "rgba(200, 200, 200, 0.2)" }}
-              content={({ active, payload }) => {
-                if (active && payload && payload.length) {
-                  const data = payload[0].payload;
-                  const change = data.close - data.open;
-                  const changePercent = ((change / data.open) * 100).toFixed(2);
-                  return (
-                    <div className="bg-amber-100 p-3 border border-gray-300 rounded shadow-lg">
-                      <p className="text-sm font-semibold">{data.datetime}</p>
-                      <p className="text-xs flex gap-1">
-                        <p className="text-zinc-900">Open: </p>
-                        <span className="font-medium text-amber-400">
-                          ${data.open?.toFixed(2)}
-                        </span>
-                      </p>
-                      <p className="text-xs flex gap-1">
-                        <p className="text-zinc-900">High:</p>
-                        <span className="font-medium text-green-600">
-                          ${data.high?.toFixed(2)}
-                        </span>
-                      </p>
-                      <p className="text-xs flex gap-1">
-                        <p className="text-zinc-900">Low: </p>
-                        <span className="font-medium text-red-600">
-                          ${data.low?.toFixed(2)}
-                        </span>
-                      </p>
-                      <p className="text-xs flex gap-1">
-                        <p className="text-zinc-900">Close: </p>
-                        <span className="font-medium text-amber-400">
-                          ${data.close?.toFixed(2)}
-                        </span>
-                      </p>
-                      <p
-                        className={`text-xs font-semibold ${
-                          change >= 0 ? "text-green-600" : "text-red-600"
-                        }`}
-                      >
-                        Change: {change >= 0 ? "+" : ""}
-                        {change.toFixed(2)} ({change >= 0 ? "+" : ""}
-                        {changePercent}%)
-                      </p>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            />
-            <Bar dataKey="highLow" shape={<Candlestick />} />
-          </ComposedChart>
-        </ResponsiveContainer>
-      ) : // ...existing line/area chart code...
-      hasData ? (
+        <div className="ml-[-30px]">
+          <ResponsiveContainer width="100%" height={340}>
+            <ComposedChart
+              data={prepareChartData(timeSeriesData)}
+              margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+              className="z-10"
+            >
+              <XAxis
+                dataKey="date"
+                stroke="#FFECB3"
+                tick={{ fill: "#FFECB3" }}
+                tickFormatter={formatXAxisDate}
+                interval="preserveStartEnd"
+                angle={-45}
+                textAnchor="end"
+                height={45}
+              />
+              <YAxis
+                domain={[
+                  (dataMin) => Math.floor(dataMin * 0.995 - 5),
+                  (dataMax) => Math.ceil(dataMax * 1.005),
+                ]}
+                stroke="#FFECB3"
+                tick={{ fill: "#FFECB3" }}
+              />
+              <Tooltip
+                cursor={{ fill: "rgba(200, 200, 200, 0.2)" }}
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    const data = payload[0].payload;
+                    const change = data.close - data.open;
+                    const changePercent = ((change / data.open) * 100).toFixed(
+                      2
+                    );
+                    return (
+                      <div className="bg-amber-100 p-3 border border-gray-300 rounded shadow-lg">
+                        <p className="text-sm font-semibold">{data.datetime}</p>
+                        <p className="text-xs flex gap-1">
+                          <p className="text-zinc-900">Open: </p>
+                          <span className="font-medium text-amber-400">
+                            ${data.open?.toFixed(2)}
+                          </span>
+                        </p>
+                        <p className="text-xs flex gap-1">
+                          <p className="text-zinc-900">High:</p>
+                          <span className="font-medium text-green-600">
+                            ${data.high?.toFixed(2)}
+                          </span>
+                        </p>
+                        <p className="text-xs flex gap-1">
+                          <p className="text-zinc-900">Low: </p>
+                          <span className="font-medium text-red-600">
+                            ${data.low?.toFixed(2)}
+                          </span>
+                        </p>
+                        <p className="text-xs flex gap-1">
+                          <p className="text-zinc-900">Close: </p>
+                          <span className="font-medium text-amber-400">
+                            ${data.close?.toFixed(2)}
+                          </span>
+                        </p>
+                        <p
+                          className={`text-xs font-semibold ${
+                            change >= 0 ? "text-green-600" : "text-red-600"
+                          }`}
+                        >
+                          Change: {change >= 0 ? "+" : ""}
+                          {change.toFixed(2)} ({change >= 0 ? "+" : ""}
+                          {changePercent}%)
+                        </p>
+                        <p className="text-xs flex gap-1">
+                          <p className="text-zinc-900">Volume: </p>
+                          <span className="font-medium text-amber-400">
+                            {data.volume?.toLocaleString()}
+                          </span>
+                        </p>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Bar dataKey="highLow" shape={<Candlestick />} />
+            </ComposedChart>
+          </ResponsiveContainer>
+          <div className="relative top-[-120px] right-[-60px]">
+            <ResponsiveContainer width="100%" height={75}>
+              <ComposedChart
+                data={prepareChartData(timeSeriesData)}
+                margin={{ top: 0, right: 30, left: 0, bottom: 5 }}
+                
+              >
+                <YAxis
+                  orientation="right"
+                  stroke="#FFECB3"
+                  tick={{ fill: "#FFECB3" }}
+                  tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
+                />
+                <Tooltip
+                  cursor={{ fill: "rgba(200, 200, 200, 0.2)" }}
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const data = payload[0].payload;
+                      return (
+                        <div className="bg-white p-2 border border-gray-300 rounded shadow-lg">
+                          <p className="text-xs">
+                            Volume:{" "}
+                            <span className="font-medium">
+                              {data.volume?.toLocaleString()}
+                            </span>
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Bar dataKey="volume" className="opacity-50">
+                  {prepareChartData(timeSeriesData).map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.close > entry.open ? "#10b981" : "#ef4444"}
+                    />
+                  ))}
+                </Bar>
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      ) : hasData ? (
         <Box className="h-[350px] w-full">
           <ChartContainer
             series={series}
