@@ -9,6 +9,7 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import TextType from "../utils/TextType";
 import { set } from "mongoose";
 
 const Insights = () => {
@@ -83,57 +84,91 @@ const Insights = () => {
             </label>
           </div>
           <div className="bg-zinc-700 h-[710px] w-full rounded-md">
-            {Object.entries(insightsData).length > 0 && (
-              <List
-                sx={{
-                  bgcolor: "rgb(63, 63, 70)",
-                  height: "100%",
-                }}
-                component="nav"
-                aria-labelledby="nested-list-subheader"
-              >
-                <ListItemButton onClick={() => isSummary()}>
-                  <ListItemIcon>
-                    <SummarizeIcon className="text-amber-400"/>
-                  </ListItemIcon>
-                  <ListItemText primary="Summary" className="text-amber-400" />
-                  {openSummary === "Summary" ? <ExpandLess className="text-zinc-900"/> : <ExpandMore className="text-zinc-900"/>}
-                </ListItemButton>
-                <Collapse in={openSummary} timeout="auto" unmountOnExit>
-                  <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900">
+            {Object.entries(insightsData).length === 0 && loading === false && <div className="h-full flex justify-center items-center">Search Ticker to Generate Insights</div> }
+            {loading === true ? (
+              <div className="h-full flex justify-center items-center">Loading...</div>
+            ) : (
+              Object.entries(insightsData).length > 0 && (
+                <List
+                  sx={{
+                    bgcolor: "rgb(63, 63, 70)",
+                    height: "100%",
+                  }}
+                  component="nav"
+                  aria-labelledby="nested-list-subheader"
+                >
+                  <ListItemButton onClick={() => isSummary()}>
+                    <ListItemIcon>
+                      <SummarizeIcon className="text-amber-400" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Summary"
+                      className="text-amber-400"
+                    />
+                    {openSummary === "Summary" ? (
+                      <ExpandLess className="text-zinc-900" />
+                    ) : (
+                      <ExpandMore className="text-zinc-900" />
+                    )}
+                  </ListItemButton>
+                  <Collapse in={openSummary} timeout="auto" unmountOnExit>
+                    <TextType
+                      text={insightsData?.data?.[0].summary}
+                      pauseDuration={1500}
+                      showCursor={true}
+                      cursorCharacter="|"
+                      className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900"
+                      textColors={["#18181b"]}
+                      isInsights={true}
+                    />
+                    {/* <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900">
                     {insightsData?.data?.[0].summary}
-                  </div>
-                </Collapse>
-                <ListItemButton onClick={() => isPositive()}>
-                  <ListItemIcon>
-                    <ThumbUpAltIcon className="text-green-600"/>
-                  </ListItemIcon>
-                  <ListItemText primary="Positive Insights" className="text-green-600" />
-                  {openPositive ? <ExpandLess className="text-zinc-900"/> : <ExpandMore className="text-zinc-900"/>}
-                </ListItemButton>
-                <Collapse in={openPositive} timeout="auto" unmountOnExit>
-                  <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900">
-                    {insightsData?.data?.[0].positive.map((s, i) => (
-                      <p key={i}>{`${i+1}. ${s}`}</p>
-                    ))}
-                  </div>
-                </Collapse>
-                <ListItemButton onClick={() => isNegative()}>
-                  <ListItemIcon>
-                    <ThumbDownAltIcon className="text-red-600"/>
-                  </ListItemIcon>
-                  <ListItemText primary="Negative Insights" className="text-red-600" />
-                  {openNegative ? <ExpandLess className="text-zinc-900" /> : <ExpandMore className="text-zinc-900"/>}
-                </ListItemButton>
-                <Collapse in={openNegative} timeout="auto" unmountOnExit>
-                  <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900">
-                    {insightsData?.data?.[0].negative.map((s, i) => (
-                      <p key={i}>{`${i+1}. ${s}`}</p>
-                    ))}
-                  </div>
-                </Collapse>
-                
-              </List>
+                    </div> */}
+                  </Collapse>
+                  <ListItemButton onClick={() => isPositive()}>
+                    <ListItemIcon>
+                      <ThumbUpAltIcon className="text-green-600" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Positive Insights"
+                      className="text-green-600"
+                    />
+                    {openPositive ? (
+                      <ExpandLess className="text-zinc-900" />
+                    ) : (
+                      <ExpandMore className="text-zinc-900" />
+                    )}
+                  </ListItemButton>
+                  <Collapse in={openPositive} timeout="auto" unmountOnExit>
+                    <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900">
+                      {insightsData?.data?.[0].positive.map((s, i) => (
+                        <p key={i}>{`${i + 1}. ${s}`}</p>
+                      ))}
+                    </div>
+                  </Collapse>
+                  <ListItemButton onClick={() => isNegative()}>
+                    <ListItemIcon>
+                      <ThumbDownAltIcon className="text-red-600" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Negative Insights"
+                      className="text-red-600"
+                    />
+                    {openNegative ? (
+                      <ExpandLess className="text-zinc-900" />
+                    ) : (
+                      <ExpandMore className="text-zinc-900" />
+                    )}
+                  </ListItemButton>
+                  <Collapse in={openNegative} timeout="auto" unmountOnExit>
+                    <div className="flex flex-col gap-2 bg-amber-100 overflow-auto p-4 text-zinc-900">
+                      {insightsData?.data?.[0].negative.map((s, i) => (
+                        <p key={i}>{`${i + 1}. ${s}`}</p>
+                      ))}
+                    </div>
+                  </Collapse>
+                </List>
+              )
             )}
           </div>
         </div>
