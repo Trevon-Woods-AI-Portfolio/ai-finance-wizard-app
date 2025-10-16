@@ -1,8 +1,10 @@
 import React from "react";
 import Orb from "../utils/orb";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
+  const navigate = useNavigate();
   return (
     <div
       style={{ width: "100%", height: "100vh", position: "relative" }}
@@ -26,10 +28,10 @@ const Landing = () => {
             </h3>
           </div>
           <div className="flex flex-row justify-center items-center gap-3 sm:gap-4 lg:gap-6 w-full sm:w-auto px-14 max-w-md sm:max-w-2xl">
-            <button className="flex-1 sm:flex-initial sm:w-auto px-4 py-2 sm:px-8 sm:py-3 md:px-10 md:py-4 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl bg-amber-400 text-white rounded-full hover:bg-amber-500 transition whitespace-nowrap cursor-pointer">
+            <button className="flex-1 sm:flex-initial sm:w-auto px-4 py-2 sm:px-8 sm:py-3 md:px-10 md:py-4 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl bg-amber-700 text-white rounded-full hover:bg-amber-500 transition whitespace-nowrap cursor-pointer z-10" onClick={() => navigate("/login")}>
               Log in
             </button>
-            <button className="flex-1 sm:flex-initial sm:w-auto px-4 py-2 sm:px-8 sm:py-3 md:px-10 md:py-4 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl bg-amber-400 text-white rounded-full hover:bg-amber-500 transition whitespace-nowrap cursor-pointer">
+            <button className="flex-1 sm:flex-initial sm:w-auto px-4 py-2 sm:px-8 sm:py-3 md:px-10 md:py-4 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl bg-amber-400 text-white rounded-full hover:bg-amber-300 transition whitespace-nowrap cursor-pointer z-10" onClick={() => navigate("/signup")}>
               Sign up
             </button>
           </div>
@@ -39,7 +41,7 @@ const Landing = () => {
       <Orb
         hoverIntensity={0.8}
         rotateOnHover={true}
-        hue={200}
+        hue={230}
         forceHoverState={false}
       />
     </div>
