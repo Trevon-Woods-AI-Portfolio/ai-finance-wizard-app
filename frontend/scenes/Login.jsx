@@ -42,7 +42,7 @@ const Login = () => {
         <Navbar />
       <div className="flex justify-center items-center min-h-screen w-full px-4">
         <div style={{ width: "100%", height: "600px", position: "fixed" }}>
-          <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
+          <Threads amplitude={1} distance={0} enableMouseInteraction={true} color={[1, 1, 1]} />
         </div>
         <div className="w-full max-w-md p-8 space-y-6 backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl">
           <div className="flex justify-center mb-4">
