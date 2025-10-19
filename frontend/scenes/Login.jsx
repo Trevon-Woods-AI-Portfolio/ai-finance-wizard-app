@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLogin } from "../state/state";
+import {
+  setAnalysisTicker,
+  setLogin,
+  setTickerCard1,
+  setTickerCard2,
+  setTickerCard3,
+  setTickerCard4,
+  setTickerCard5,
+  setWatchlist,
+} from "../state/state";
 import Navbar from "../components/Navbar";
 import Threads from "../utils/Threads";
 
@@ -16,33 +25,79 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handlelogin = async () => {
-    const res = await fetch("api/user/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    const userInfo = await res.json();
+  useEffect(() => {
+    return () => {
+      // Cleanup function
+      const canvas = document.querySelector('canvas');
+      if (canvas) {
+        const gl = canvas.getContext('webgl') || canvas.getContext('webgl2');
+        if (gl) {
+          const loseContext = gl.getExtension('WEBGL_lose_context');
+          if (loseContext) {
+            loseContext.loseContext();
+          }
+        }
+      }
+    };
+  }, []);
 
-    if (userInfo.error) {
-      return console.log("Error logging in:", userInfo.error);
-    }
-
-    navigate("/home");
-  };
-
-  const handleSubmit = (e) => {
+  const handlelogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Add your login logic here
-    setLoading(false);
+    try {
+      const res = await fetch("api/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const userInfo = await res.json();
+
+      if (userInfo.error) {
+        return console.log("Error logging in:", userInfo.error);
+      }
+
+      console.log("Login successful:", userInfo);
+
+      dispatch(
+        setLogin({
+          user: { id: userInfo.user.id, username: userInfo.user.username, email: userInfo.user.email },
+        })
+      );
+      dispatch(
+        setTickerCard1({ tickerCard1: userInfo.user.tickerCards.tickerCard1 })
+      );
+      dispatch(
+        setTickerCard2({ tickerCard2: userInfo.user.tickerCards.tickerCard2 })
+      );
+      dispatch(
+        setTickerCard3({ tickerCard3: userInfo.user.tickerCards.tickerCard3 })
+      );
+      dispatch(
+        setTickerCard4({ tickerCard4: userInfo.user.tickerCards.tickerCard4 })
+      );
+      dispatch(
+        setTickerCard5({ tickerCard5: userInfo.user.tickerCards.tickerCard5 })
+      );
+      dispatch(setWatchlist({ watchlist: userInfo.user.watchlist }));
+      dispatch(setAnalysisTicker({ analysisTicker: userInfo.user.analysis }));
+
+      setLoading(false);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
   return (
     <div className="flex min-h-screen w-full bg-gradient-to-br from-black via-zinc-800 to-black">
-        <Navbar />
+      <Navbar />
       <div className="flex justify-center items-center min-h-screen w-full px-4">
         <div style={{ width: "100%", height: "600px", position: "fixed" }}>
-          <Threads amplitude={1} distance={0} enableMouseInteraction={true} color={[1, 1, 1]} />
+          <Threads
+            amplitude={1}
+            distance={0}
+            enableMouseInteraction={true}
+            color={[1, 1, 1]}
+          />
         </div>
         <div className="w-full max-w-md p-8 space-y-6 backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl">
           <div className="flex justify-center mb-4">
@@ -60,7 +115,7 @@ const Login = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handlelogin} className="space-y-4">
             {error && (
               <div className="p-3 text-sm text-red-400 bg-red-500/10 backdrop-blur-sm border border-red-500/20 rounded-lg">
                 {error}

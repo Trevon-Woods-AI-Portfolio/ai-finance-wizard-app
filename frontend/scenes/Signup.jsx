@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Threads from "../utils/Threads";
 import Avatar from "@mui/material/Avatar";
 import Navbar from "../components/Navbar";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setLogin } from "../state/state";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -14,28 +15,83 @@ const Signup = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError("");
+  useEffect(() => {
+    return () => {
+      // Cleanup function
+      const canvas = document.querySelector('canvas');
+      if (canvas) {
+        const gl = canvas.getContext('webgl') || canvas.getContext('webgl2');
+        if (gl) {
+          const loseContext = gl.getExtension('WEBGL_lose_context');
+          if (loseContext) {
+            loseContext.loseContext();
+          }
+        }
+      }
+    };
+  }, []);
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      setError("");
+
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
+
+      setLoading(true);
+
+      const res = await fetch("/api/user/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        setError(data.error);
+        setLoading(false);
+        return;
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      setError("An unexpected error occurred. Please try again.");
+      setLoading(false);
+    } finally {
+      dispatch(setLogin({ user: data.user }));
+      setLoading(false);
+      navigate("/dashboard");
     }
-
-    setLoading(true);
-    // Add your signup logic here
-    setLoading(false);
   };
 
   return (
     <div className="flex min-h-screen w-full bg-gradient-to-br from-black via-zinc-800 to-black">
       <Navbar />
       <div className="flex justify-center items-center min-h-screen w-full px-4">
-        <div style={{ width: "100%", height: "600px", position: "fixed" }}>
-          <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
+        <div
+          style={{
+            width: "100%",
+            height: "600px",
+            position: "fixed",
+            zIndex: 0,
+          }}
+        >
+          <Threads
+            amplitude={1}
+            distance={0}
+            enableMouseInteraction={true}
+            color={[1, 1, 1]}
+          />
         </div>
         <div className="w-full max-w-md p-8 space-y-6 backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl z-10">
           <div className="flex justify-center mb-4">

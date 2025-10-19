@@ -28,7 +28,6 @@ const signupUser = async (req, res) => {
       email: newUser.email,
     };
 
-
     res
       .status(201)
       .json({ message: "User registered successfully", user: userResponse });
@@ -58,6 +57,9 @@ const loginUser = async (req, res) => {
       id: userExists._id,
       username: userExists.username,
       email: userExists.email,
+      tickerCards: userExists.tickerCards,
+      watchlist: userExists.watchlist,
+      analysis: userExists.analysis,
     };
 
     generateTokenAndCookie(userExists._id, res);
@@ -72,6 +74,24 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
+    const { userData } = req.body;
+
+    const user = await User.findById(userData.id);
+    if (!user) {
+      return res.status(400).json({ error: "User not found." });
+    }
+
+    user.tickerCards = {
+      tickerCard1: userData.tickerCard1,
+      tickerCard2: userData.tickerCard2,
+      tickerCard3: userData.tickerCard3,
+      tickerCard4: userData.tickerCard4,
+      tickerCard5: userData.tickerCard5,
+    };
+    user.watchlist = userData.watchlist;
+    user.analysis = userData.analysisTicker;
+    await user.save();
+
     res.cookie("jwt", "", { maxAge: 1 });
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {

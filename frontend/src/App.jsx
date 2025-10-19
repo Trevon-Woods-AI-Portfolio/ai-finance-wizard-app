@@ -14,7 +14,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Landing />} />
-            <Route path='/dashboard' element={isAuth === false ? <Dashboard /> : <Navigate to={"/login"} />} />
+            <Route path='/dashboard' element={isAuth === true ? <Dashboard /> : <Navigate to={"/login"} />} />
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
           </Routes>
