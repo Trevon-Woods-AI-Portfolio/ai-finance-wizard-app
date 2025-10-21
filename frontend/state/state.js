@@ -4,12 +4,14 @@ import { set } from "mongoose";
 const initialState = {
   user: null,
   isLoggedIn: false,
-  tickerCard1: "",
-  tickerCard2: "",
-  tickerCard3: "",
-  tickerCard4: "",
-  tickerCard5: "",
-  currentPage: "dashboard",
+  tickerCards: {
+    tickerCard1: "",
+    tickerCard2: "",
+    tickerCard3: "",
+    tickerCard4: "",
+    tickerCard5: "",
+  },
+  currentPage: "Overview",
   analysisTicker: "",
   watchlist: [],
   news: [],
@@ -27,32 +29,34 @@ export const systemSlice = createSlice({
     setLogout: (state) => {
       state.user = null;
       state.isLoggedIn = false;
-      state.tickerCard1 = "";
-      state.tickerCard2 = "";
-      state.tickerCard3 = "";
-      state.tickerCard4 = "";
-      state.tickerCard5 = "";
+      state.tickerCards = {
+        tickerCard1: "",
+        tickerCard2: "",
+        tickerCard3: "",
+        tickerCard4: "",
+        tickerCard5: "",
+      };
       state.analysisTicker = "";
       state.watchlist = [];
       state.news = [];
       state.insights = [];
     },
     setTickerCard1: (state, action) => {
-      state.tickerCard1 = action.payload.tickerCard1;
+      state.tickerCards.tickerCard1 = action.payload.tickerCard1;
     },
     setTickerCard2: (state, action) => {
-      state.tickerCard1 = action.payload.tickerCard2;
+      state.tickerCards.tickerCard2 = action.payload.tickerCard2;
     },
     setTickerCard3: (state, action) => {
-      state.tickerCard1 = action.payload.tickerCard3;
+      state.tickerCards.tickerCard3 = action.payload.tickerCard3;
     },
     setTickerCard4: (state, action) => {
-      state.tickerCard1 = action.payload.tickerCard4;
+      state.tickerCards.tickerCard4 = action.payload.tickerCard4;
     },
     setTickerCard5: (state, action) => {
-      state.tickerCard1 = action.payload.tickerCard5;
+      state.tickerCards.tickerCard5 = action.payload.tickerCard5;
     },
-    setWatchlist: (state, action) => {
+    setStateWatchlist: (state, action) => {
       state.watchlist = action.payload.watchlist;
     },
     setCurrentPage: (state, action) => {
@@ -78,7 +82,7 @@ export const {
   setTickerCard3,
   setTickerCard4,
   setTickerCard5,
-  setWatchlist,
+  setStateWatchlist,
   setCurrentPage,
   setAnalysisTicker,
   setNews,

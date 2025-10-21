@@ -8,6 +8,7 @@ import Dashboard from '../scenes/Dashboard'
 
 function App() {
   const isAuth = Boolean(useSelector(state => state.user))
+  console.log("User is authenticated: ", useSelector(state => state.user));
 
   return (
       <div className=''>

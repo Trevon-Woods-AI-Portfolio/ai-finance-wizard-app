@@ -76,24 +76,29 @@ const logoutUser = async (req, res) => {
   try {
     const { userData } = req.body;
 
-    const user = await User.findById(userData.id);
+    const user = await User.findOne({ _id: userData.id});
     if (!user) {
       return res.status(400).json({ error: "User not found." });
     }
+    console.log(user)
 
     user.tickerCards = {
-      tickerCard1: userData.tickerCard1,
-      tickerCard2: userData.tickerCard2,
-      tickerCard3: userData.tickerCard3,
-      tickerCard4: userData.tickerCard4,
-      tickerCard5: userData.tickerCard5,
+      tickerCard1: userData.tickerCards.tickerCard1,
+      tickerCard2: userData.tickerCards.tickerCard2,
+      tickerCard3: userData.tickerCards.tickerCard3,
+      tickerCard4: userData.tickerCards.tickerCard4,
+      tickerCard5: userData.tickerCards.tickerCard5,
     };
+
     user.watchlist = userData.watchlist;
     user.analysis = userData.analysisTicker;
+
+    console.log("user tickerCards on logout:", user);
+
     await user.save();
 
     res.cookie("jwt", "", { maxAge: 1 });
-    res.status(200).json({ message: "Logout successful" });
+    res.status(200).json({ message: "Logout successful", user });
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log("Error in logout:", error);

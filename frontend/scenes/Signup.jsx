@@ -21,11 +21,11 @@ const Signup = () => {
   useEffect(() => {
     return () => {
       // Cleanup function
-      const canvas = document.querySelector('canvas');
+      const canvas = document.querySelector("canvas");
       if (canvas) {
-        const gl = canvas.getContext('webgl') || canvas.getContext('webgl2');
+        const gl = canvas.getContext("webgl") || canvas.getContext("webgl2");
         if (gl) {
-          const loseContext = gl.getExtension('WEBGL_lose_context');
+          const loseContext = gl.getExtension("WEBGL_lose_context");
           if (loseContext) {
             loseContext.loseContext();
           }
@@ -63,14 +63,14 @@ const Signup = () => {
         setLoading(false);
         return;
       }
+
+      dispatch(setLogin({ user: data.user }));
+      setLoading(false);
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error during signup:", error);
       setError("An unexpected error occurred. Please try again.");
       setLoading(false);
-    } finally {
-      dispatch(setLogin({ user: data.user }));
-      setLoading(false);
-      navigate("/dashboard");
     }
   };
 

@@ -3,8 +3,17 @@ import Avatar from "@mui/material/Avatar";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
+import {
+  setTickerCard1,
+  setTickerCard2,
+  setTickerCard3,
+  setTickerCard4,
+  setTickerCard5,
+} from "../state/state";
+import { useDispatch, useSelector } from "react-redux";
 
 const TickerCard = ({
+  index,
   ticker,
   name,
   logo,
@@ -15,23 +24,55 @@ const TickerCard = ({
   const [search, setSearch] = useState(false);
   const [newTicker, setNewTicker] = useState("");
   const [data, setData] = useState({});
+  const tickers = Object.entries(useSelector((state) => state.tickerCards));
+  const [savedTicker, setSavedTicker] = useState(
+    tickers[index - 1] ? tickers[index - 1][1] : null
+  );
   const plusminus = change.charAt(0) === "+" ? true : false;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (savedTicker !== "") {
+      getData(savedTicker, index);
+    }
+  }, []);
 
   const getData = async (newTicker) => {
     const res = await fetch(`/api/data/quoteData/${newTicker}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
     const quote = await res.json();
 
-    if (quote.error){
-        return console.log("Error getting quote: ", quote.error);
+    if (quote.error) {
+      return console.log("Error getting quote: ", quote.error);
     }
 
     setData(quote.data);
     console.log(quote.data);
+
+    switch (index) {
+      case 1:
+        dispatch(setTickerCard1({ tickerCard1: newTicker }));
+        break;
+      case 2:
+        dispatch(setTickerCard2({ tickerCard2: newTicker }));
+        break;
+      case 3:
+        dispatch(setTickerCard3({ tickerCard3: newTicker }));
+        break;
+      case 4:
+        dispatch(setTickerCard4({ tickerCard4: newTicker }));
+        break;
+      case 5:
+        dispatch(setTickerCard5({ tickerCard5: newTicker }));
+        break;
+      default:
+        break;
+    }
+
     setSearch(false);
   };
 
@@ -46,8 +87,12 @@ const TickerCard = ({
             <Avatar alt="Stock Logo" src={data.logo || logo} />
           </div>
           <div>
-            <p className="font-bold font-sans text-amber-300">{data.symbol || ticker}</p>
-            <p className="text-sm font-serif text-slate-400">{data.name ? data.name.slice(0,8) : name}</p>
+            <p className="font-bold font-sans text-amber-300">
+              {data.symbol || ticker}
+            </p>
+            <p className="text-sm font-serif text-slate-400">
+              {data.name ? data.name.slice(0, 8) : name}
+            </p>
           </div>
         </div>
         <div className="flex gap-2 items-center">
@@ -66,10 +111,13 @@ const TickerCard = ({
             <div className="relative top-0 right-2 cursor-pointer">
               <div className="flex flex-col justify-center items-center gap-1">
                 <div onClick={() => setSearch(false)} className="text-red-500">
-                  <CloseIcon sx={{ width: 21, height: 21 }}/>
+                  <CloseIcon sx={{ width: 21, height: 21 }} />
                 </div>
-                <div onClick={() => getData(newTicker)} className="text-green-500">
-                  <CheckIcon sx={{ width: 21, height: 21 }}/>
+                <div
+                  onClick={() => getData(newTicker)}
+                  className="text-green-500"
+                >
+                  <CheckIcon sx={{ width: 21, height: 21 }} />
                 </div>
               </div>
             </div>
@@ -78,7 +126,9 @@ const TickerCard = ({
       </div>
       <div className="w-full h-[50%] flex justify-evenly items-center gap-6 p-4">
         <div className="flex flex-col gap-1">
-          <p className="text-xl font-mono font-bold text-amber-100">{data.price || price}</p>
+          <p className="text-xl font-mono font-bold text-amber-100">
+            {data.price || price}
+          </p>
           <p
             className={
               plusminus
@@ -86,7 +136,9 @@ const TickerCard = ({
                 : "text-xs font-mono text-rose-400"
             }
           >
-            {`${data.change || change} (${data.percentageChange || percentageChange})`}
+            {`${data.change || change} (${
+              data.percentageChange || percentageChange
+            })`}
           </p>
         </div>
         <div>
@@ -106,4 +158,3 @@ const TickerCard = ({
 };
 
 export default TickerCard;
-

@@ -19,13 +19,14 @@ import { ChartsAxisHighlight } from "@mui/x-charts/ChartsAxisHighlight";
 import { ChartsGrid, chartsGridClasses } from "@mui/x-charts/ChartsGrid";
 import { axisClasses } from "@mui/x-charts/ChartsAxis";
 import AddIcon from "@mui/icons-material/Add";
+import { useDispatch, useSelector } from "react-redux";
+import { setAnalysisTicker, setStateWatchlist } from "../state/state";
 
 const Chart = ({
   sampleData,
   chartData,
   symbol,
   setChartData,
-  setWatchlist,
   setStatistics,
   statistics,
 }) => {
@@ -34,6 +35,8 @@ const Chart = ({
   const hasData = timeSeriesData.length > 0;
   const [chartType, setChartType] = useState("line");
   const [interval, setInterval] = useState("1day");
+  const watchlist = useSelector((state) => state.watchlist);
+  const dispatch = useDispatch();
 
   console.log(chartData);
   async function handleChangeInterval(newInterval) {
@@ -81,6 +84,9 @@ const Chart = ({
       if (overviewData.error) {
         return console.log("Error getting overview data: ", overviewData.error);
       }
+
+      console.log("Chart symbol change: ", newSymbol);
+      dispatch(setAnalysisTicker({analysisTicker: newSymbol}));
 
       setChartData(data);
       setStatistics(overviewData);
@@ -171,7 +177,7 @@ const Chart = ({
           <h1 className="text-xl font-bold text-amber-300">📊 {symbol}</h1>
           <div
             className="cursor-pointer"
-            onClick={() => setWatchlist((prev) => [...prev, symbol])}
+            onClick={() => dispatch(setStateWatchlist({watchlist: [...watchlist, symbol]}))}
           >
             <AddIcon />
           </div>

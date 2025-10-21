@@ -15,15 +15,9 @@ const Toolbar = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user);
-  const tickerCard1 = useSelector((state) => state.tickerCard1);
-  const tickerCard2 = useSelector((state) => state.tickerCard2);
-  const tickerCard3 = useSelector((state) => state.tickerCard3);
-  const tickerCard4 = useSelector((state) => state.tickerCard4);
-  const tickerCard5 = useSelector((state) => state.tickerCard5);
+  const tickerCards = useSelector((state) => state.tickerCards);
   const watchlist = useSelector((state) => state.watchlist);
   const analysisTicker = useSelector((state) => state.analysisTicker);
-
-  console.log("user in toolbar:", user);
 
   const handleLogout = async () => {
     try {
@@ -32,12 +26,8 @@ const Toolbar = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userData: {
-            id: user?.email,
-            tickerCard1: tickerCard1 || "",
-            tickerCard2: tickerCard2 || "",
-            tickerCard3: tickerCard3 || "",
-            tickerCard4: tickerCard4 || "",
-            tickerCard5: tickerCard5 || "",
+            id: user?.id,
+            tickerCards,
             watchlist: watchlist || [],
             analysisTicker: analysisTicker || "",
           },

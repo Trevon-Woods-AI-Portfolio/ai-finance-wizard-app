@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import Chart from "../components/Chart";
 import DescriptionCard from "../components/DescriptionCard";
 import StatisticsCard from "../components/StatisticsCard";
+import { useSelector } from "react-redux";
 
 const Analysis = () => {
   const [sampleData, setSampleData] = useState({});
   const [chartData, setChartData] = useState({});
   const [statistics, setStatistics] = useState({});
   const symbol = chartData?.data?.name || sampleData?.data?.name || null;
+  let currentSymbol = useSelector((state) => state.analysisTicker);
+  console.log("Saved symbol in Analysis: ", currentSymbol);
 
   useEffect(() => {
     const isChartData = Object.keys(chartData).length === 0;
@@ -19,7 +22,7 @@ const Analysis = () => {
 
   async function getSampleData() {
     try {
-      const res = await fetch("api/data/chartData/AAPL/1day", {
+      const res = await fetch(`api/data/chartData/${currentSymbol || "AAPL"}/1day`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +34,7 @@ const Analysis = () => {
       if (data.error)
         return console.error("Error fetching sample data:", data.error);
 
-      const res2 = await fetch(`/api/data/overview/AAPL`, {
+      const res2 = await fetch(`/api/data/overview/${currentSymbol || "AAPL"}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

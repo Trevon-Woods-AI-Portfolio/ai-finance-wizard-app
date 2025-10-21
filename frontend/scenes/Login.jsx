@@ -10,7 +10,7 @@ import {
   setTickerCard3,
   setTickerCard4,
   setTickerCard5,
-  setWatchlist,
+  setStateWatchlist,
 } from "../state/state";
 import Navbar from "../components/Navbar";
 import Threads from "../utils/Threads";
@@ -24,22 +24,6 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    return () => {
-      // Cleanup function
-      const canvas = document.querySelector('canvas');
-      if (canvas) {
-        const gl = canvas.getContext('webgl') || canvas.getContext('webgl2');
-        if (gl) {
-          const loseContext = gl.getExtension('WEBGL_lose_context');
-          if (loseContext) {
-            loseContext.loseContext();
-          }
-        }
-      }
-    };
-  }, []);
 
   const handlelogin = async (e) => {
     e.preventDefault();
@@ -60,7 +44,11 @@ const Login = () => {
 
       dispatch(
         setLogin({
-          user: { id: userInfo.user.id, username: userInfo.user.username, email: userInfo.user.email },
+          user: {
+            id: userInfo.user.id,
+            username: userInfo.user.username,
+            email: userInfo.user.email,
+          },
         })
       );
       dispatch(
@@ -78,7 +66,8 @@ const Login = () => {
       dispatch(
         setTickerCard5({ tickerCard5: userInfo.user.tickerCards.tickerCard5 })
       );
-      dispatch(setWatchlist({ watchlist: userInfo.user.watchlist }));
+
+      dispatch(setStateWatchlist({ watchlist: userInfo.user.watchlist }));
       dispatch(setAnalysisTicker({ analysisTicker: userInfo.user.analysis }));
 
       setLoading(false);

@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
+import { useSelector } from "react-redux";
 
-const Watchlist = ({ watchlist }) => {
-  const [watchlistData, setWatchlistData] = useState([]);
+const Watchlist = () => {
+  let [watchlistData, setWatchlistData] = useState([]);
+  let watchlist = useSelector((state) => state.watchlist);
+
+  console.log("Current Watchlist from Redux: ", watchlist);
+  console.log("Watchlist Data State: ", watchlistData);
+
   useEffect(() => {
     if (watchlist.length > 0) {
       fetchWatchlistData();

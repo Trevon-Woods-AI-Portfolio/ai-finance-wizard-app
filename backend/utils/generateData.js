@@ -10,6 +10,8 @@ async function getQuoteData(ticker) {
   );
 
   const data2 = await res2.json();
+  console.log("Data2 quote data: ",data2)
+  console.log(parseFloat(data2.price).toFixed(2))
 
   const res3 = await fetch(
     `https://api.twelvedata.com/logo?symbol=${ticker}&apikey=${process.env.TWELVE_DATA_API_KEY}`

@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import { useDispatch, useSelector } from "react-redux";
+import { setStateWatchlist } from "../state/state";
 
-const GLCard = ({changeChartData, setWatchlist}) => {
+const GLCard = ({changeChartData}) => {
   const [topic, setTopic] = useState("Gainers");
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  let currentWatchlist = useSelector((state) => state.watchlist);
 
   // Fetch data when topic changes
   useEffect(() => {
@@ -113,7 +117,7 @@ const GLCard = ({changeChartData, setWatchlist}) => {
       renderCell: (params) => (
         <button
           className="w-full text-amber-100 hover:text-amber-300 underline cursor-pointer font-semibold"
-          onClick={() => setWatchlist(prev => [...prev, params.row.ticker])}
+          onClick={() => dispatch(setStateWatchlist({watchlist: [...currentWatchlist, params.row.ticker]}))}
         >
           <AddIcon />
         </button>

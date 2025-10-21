@@ -16,25 +16,13 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   tickerCards: {
-    tickerCard1: {
-      type: String,
-      default: "",
-    },
-    tickerCard2: {
-      type: String,
-      default: "",
-    },
-    tickerCard3: {
-      type: String,
-      default: "",
-    },
-    tickerCard4: {
-      type: String,
-      default: "",
-    },
-    tickerCard5: {
-      type: String,
-      default: "",
+    type: Object,
+    default: {
+      tickerCard1: "",
+      tickerCard2: "",
+      tickerCard3: "",
+      tickerCard4: "",
+      tickerCard5: "",
     },
   },
   watchlist: {

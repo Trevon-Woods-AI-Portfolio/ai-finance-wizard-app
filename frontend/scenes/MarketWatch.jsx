@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { setAnalysisTicker } from "../state/state";
 import TickerCard from "../components/TickerCard";
 import Chart from "../components/Chart";
 import GLCard from "../components/GLCard";
 import Watchlist from "../components/Watchlist";
+import { useSelector, useDispatch } from "react-redux";
 
 const MarketWatch = () => {
   const [sampleData, setSampleData] = useState({});
   const [chartData, setChartData] = useState({});
-  const [watchlist, setWatchlist] = useState([]);
-  const symbol = chartData?.data?.name || sampleData?.data?.name || "AAPL";
+  const symbol = chartData?.data?.name || sampleData?.data?.name || null;
+  let currentSymbol = useSelector((state) => state.analysisTicker);
+  const dispatch = useDispatch();
+
+  console.log("Saved symbol in Overview: ", currentSymbol);
 
   useEffect(() => {
     const isChartData = Object.keys(chartData).length === 0;
@@ -20,7 +25,7 @@ const MarketWatch = () => {
 
   async function getSampleData() {
     try {
-      const res = await fetch("api/data/chartData/AAPL/1day", {
+      const res = await fetch(`api/data/chartData/${currentSymbol || "AAPL"}/1day`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -54,12 +59,14 @@ const MarketWatch = () => {
       return console.log("Error getting chart data: ", data.error);
     }
     setChartData(data);
+    dispatch(setAnalysisTicker({analysisTicker: newTicker}));
   }
   return (
     <div className="flex flex-col h-[91.5%] items-center gap-8 h-screen">
       <div className="mt-24"></div>
       <div className="grid grid-cols-5 h-[175px] w-[90%] gap-x-10">
         <TickerCard
+          index={1}
           ticker={"NDAQ"}
           name={"Nasdaq"}
           logo={"../assets/nasdaq_logo.jpeg"}
@@ -68,6 +75,7 @@ const MarketWatch = () => {
           percentageChange={"-1.23%"}
         />
         <TickerCard
+          index={2}
           ticker={"SPY"}
           name={"Spider"}
           logo={"../assets/spy_logo.jpeg"}
@@ -76,6 +84,7 @@ const MarketWatch = () => {
           percentageChange={"+1.01%"}
         />
         <TickerCard
+          index={3}
           ticker={"DOW"}
           name={"Dow Jones"}
           logo={"../assets/dow_logo.jpeg"}
@@ -84,6 +93,7 @@ const MarketWatch = () => {
           percentageChange={"+0.68%"}
         />
         <TickerCard
+          index={4}
           ticker={"AAPL"}
           name={"Apple, Inc."}
           logo={"../assets/apple_logo.jpeg"}
@@ -92,6 +102,7 @@ const MarketWatch = () => {
           percentageChange={"+0.85%"}
         />
         <TickerCard
+          index={5}
           ticker={"MSFT"}
           name={"Microsoft"}
           logo={"../assets/microsoft_logo.jpeg"}
@@ -108,18 +119,16 @@ const MarketWatch = () => {
             }
             symbol={symbol}
             setChartData={setChartData}
-            setWatchlist={setWatchlist}
           />
         </div>
         <div className="h-[450px] w-full col-span-2 rounded-2xl bg-zinc-900 border border-black shadow-lg">
-          <Watchlist watchlist={watchlist} />
+          <Watchlist />
         </div>
       </div>
       <div className="grid grid-cols-5 w-[90%] gap-x-10">
         <div className="h-[450px] w-full col-span-5 rounded-2xl bg-zinc-900 border border-black shadow-lg">
           <GLCard
             changeChartData={changeChartData}
-            setWatchlist={setWatchlist}
           />
         </div>
       </div>
